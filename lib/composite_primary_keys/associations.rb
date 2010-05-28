@@ -2,7 +2,8 @@ module ActiveRecord
   module Associations
     class AssociationProxy
       def full_columns_equals(table_name, keys, quoted_ids)
-        quoted_table_name = @owner.connection.quote_table_name(table_name)
+        #HACK don't double quote table name in MySQL
+        quoted_table_name = table_name.match(/^`.*`$/) ? table_name : @owner.connection.quote_table_name(table_name)
 
         keys = [keys].flatten
         ids = [quoted_ids].flatten
